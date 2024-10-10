@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHome, FaChartPie, FaCog, FaBell, FaComments, FaUser, FaBars } from 'react-icons/fa';
+import { FaHome, FaChartPie, FaCog, FaBell, FaEnvelope, FaUser, FaBars } from 'react-icons/fa';
 import { getAuth } from 'firebase/auth'; // Importando o Firebase Auth
 import { collection, onSnapshot, query, orderBy, doc, updateDoc, getDoc,addDoc} from 'firebase/firestore';
 import { db, auth } from './firebase';
@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'; // Corrigido para usar react-rou
 
 const Container = styled.div`
   flex: 1;
-  background-color: #271f1f; 
+  background-color: #AFAFAF; /* Alterado para um tom de cinza claro */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,13 +23,13 @@ const Container = styled.div`
 
 const Header = styled.header`
   padding: 10px;
-
+  background-color: #343a40; /* Alterado para um cinza escuro */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 80%;
   border-radius: 10px;
-  margin-left: 100px; /* Define a margem esquerda */
+  margin-left: 280px; /* Define a margem esquerda */
 `;
 
 const HeaderText = styled.h1`
@@ -58,11 +58,10 @@ const ForumList = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 80px;
 `;
 
 const ForumItem = styled.div`
-  background-color: #fff;
+  background-color: #ffffff;
   margin: 16px 0;
   border-radius: 10px;
   padding: 16px;
@@ -165,10 +164,10 @@ const Spinner = styled.div`
 `;
 // Menu lateral
 const Sidebar = styled.div`
- 
-
+  width: 250px;
+  background-color: #343a40;  // Cor mais escura e suave
   color: white;
-  
+  position: fixed;
   height: 100%;
   top: 0;
   left: 0;
@@ -253,46 +252,13 @@ const ActionButton = styled.button`
   }
 `;
 
-const CommentInputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: #f0f2f5; /* Fundo similar ao do Facebook */
-  border-radius: 20px;
-  padding: 10px 15px;
-  margin-top: 10px;
-  border: 1px solid #ddd; /* Borda sutil */
-  width: 95%;
+const CommentLikeIcon = styled(FaThumbsUp)`
+  margin-right: 6px;
 `;
 
-const CommentInput = styled.input`
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  padding: 8px;
-  color: #333;
-  
-  &::placeholder {
-    color: #888;
-  }
+const CommentReplyIcon = styled(BiChat)`
+  margin-right: 6px;
 `;
-
-const SendButton = styled.button`
-  background-color: #1877f2; /* Cor principal do Facebook */
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  margin-left: 10px;
-  
-  &:hover {
-    background-color: #145dbf; /* Efeito hover */
-  }
-`;
-
-
 
 const Foruma = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -431,32 +397,11 @@ const Foruma = () => {
     borderRadius: '10px',
     padding: '20px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+  };
 
- };
-const Sidebar = styled.div`
-  color: white;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1); // Sombras suaves
-`;
-
-// Adicione a seção de "Posts Recentes" diretamente dentro do Sidebar
-const RecentPostsContainer = styled.div`
-  display: ${props => (props.isOpen ? 'block' : 'none')}; // Oculta ou exibe com base na prop isOpen
-  margin-top: 20px;
-`;
-  const renderMenuItem = (icon, label, route) => (
+  const renderMenuItem = (icon, label) => (
     <li
       style={menuItemStyle}
-      onClick={() => {
-        if (route) {
-          navigate(route); // Navega para a rota correspondente
-        }
-      }}
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#333')}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#111111')}
     >
@@ -464,7 +409,6 @@ const RecentPostsContainer = styled.div`
       {isOpen && <span style={{ fontSize: '16px' }}>{label}</span>}
     </li>
   );
-  
   const [forums, setForums] = useState([]);
   const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
@@ -620,20 +564,7 @@ const toggleCommentsVisibility = (postId) => {
             }}
           />
         </button>
-        <Header>
-        <HeaderText>Fórum</HeaderText>
-        <div>
-          <SearchInput 
-            type="text" 
-            placeholder="Buscar por palavras-chave ou usuário" 
-            value={searchTerm} 
-            onChange={(e) => setSearchTerm(e.target.value)} 
-          />
-        </div>
-        <AddButton onClick={() => navigate('/createforum')}>
-          <AddCircle style={{ fontSize: 50, color: '#ffffff' }} />
-        </AddButton>
-      </Header>
+        <span>SGTO/DVM</span>
       </div>
 
       <div style={sidebarStyle}>
@@ -648,20 +579,40 @@ const toggleCommentsVisibility = (postId) => {
           </div>
         )}
 
-<ul style={menuItemsStyle}>
-  {renderMenuItem(<FaHome style={iconStyle} />, 'Home', '/MenuChart')}
-  {renderMenuItem(<FaChartPie style={iconStyle} />, 'Charts', '/charts')}
-  {renderMenuItem(<FaCog style={iconStyle} />, 'Settings', '/settings')}
-  {renderMenuItem(<FaBell style={iconStyle} />, 'Notifications', '/notifications')}
-  {renderMenuItem(<FaComments style={iconStyle} />, 'Forum', '/forum')} 
-  {renderMenuItem(<FaUser style={iconStyle} />, 'Profile', '/profile')}
-</ul>
+        <ul style={menuItemsStyle}>
+          {renderMenuItem(<FaHome style={iconStyle} />, 'Home')}
+          {renderMenuItem(<FaChartPie style={iconStyle} />, 'Charts')}
+          {renderMenuItem(<FaCog style={iconStyle} />, 'Settings')}
+          {renderMenuItem(<FaBell style={iconStyle} />, 'Notifications')}
+          {renderMenuItem(<FaEnvelope style={iconStyle} />, 'Messages')}
+          {renderMenuItem(<FaUser style={iconStyle} />, 'Profile')}
+        </ul>
       </div>
 
       <div>
       <Container>
-      
-      
+      <Header>
+        <HeaderText>Fórum</HeaderText>
+        <div>
+          <SearchInput 
+            type="text" 
+            placeholder="Buscar por palavras-chave ou usuário" 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
+          />
+        </div>
+        <AddButton onClick={() => navigate('/createforum')}>
+          <AddCircle style={{ fontSize: 50, color: '#ffffff' }} />
+        </AddButton>
+      </Header>
+      <Sidebar>
+        <h2>Posts Recentes</h2>
+        {forums.map(item => (
+          <SidebarItem key={item.id} onClick={() => navigate(`/ForumDetail/${item.id}`)}>
+            {item.title}
+          </SidebarItem>
+        ))}
+      </Sidebar>
       <ForumList>
         {filteredForums.map(item => {
           const user = users[item.userId] || {};
@@ -739,15 +690,15 @@ const toggleCommentsVisibility = (postId) => {
     })}
 
     {/* Adicionar novo comentário */}
-    <CommentInputContainer>
-    <CommentInput 
+    <CommentSection>
+      <input
         type="text"
         placeholder="Adicionar comentário"
         value={newComment[item.id] || ''}
         onChange={(e) => setNewComment(prev => ({ ...prev, [item.id]: e.target.value }))}
       />
-      <SendButton onClick={() => handleAddComment(item.id)}>Enviar</SendButton >
-      </CommentInputContainer>
+      <button onClick={() => handleAddComment(item.id)}>Enviar</button>
+    </CommentSection>
   </div>
 )}
 

@@ -17,7 +17,7 @@ const LoginScreen = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('Usuário logado:', user.email);
-      navigate('/forum'); // Redireciona após o login bem-sucedido
+      navigate('/MenuChart'); // Redireciona após o login bem-sucedido
     } catch (error) {
       console.error('Erro no login:', error);
       setErrorMessage('Erro ao fazer login. Verifique suas credenciais.');
@@ -35,7 +35,7 @@ const LoginScreen = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('Usuário cadastrado:', user.email);
-      navigate('/forum'); // Redireciona após o cadastro bem-sucedido
+      navigate('/MenuChart'); // Redireciona após o cadastro bem-sucedido
     } catch (error) {
       console.error('Erro no cadastro:', error);
       setErrorMessage('Erro ao fazer o cadastro. Verifique os dados.');
